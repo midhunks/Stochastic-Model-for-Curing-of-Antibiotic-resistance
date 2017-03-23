@@ -10,33 +10,25 @@ Cycle = [Cell.Cycle];
 %% Timestep of the next event
 Time_step = log(1/rand)/sum(Propensity_Matrix(:));
 
-%% (Flushing) Checking if the Clock passed Cell Cycle
-Clock_Temp = Clock + Time_step; % Updated clock of Cells
+%% Choosing event
+Clock_Temp = Clock + Time_step; % Temperory updated clock of Cells
 Cell_Cycle_Difference = Clock_Temp - Cycle;
 Parents_Index = find(Cell_Cycle_Difference >= 0);
 
-if ~isempty(Parents_Index) % Choosing Cell division event
+if ~isempty(Parents_Index) % Checking if the Clock passed Cell Cycle
     % Finding the timestep for the Cell Division
     [Extra_time,Index]=max(Cell_Cycle_Difference(Parents_Index));
     Time_step = Time_step - Extra_time; % Removing extra time passed
     
-    Cell = Cell_division(Cell,Parents_Index(Index),Time_step);
+    % Cell division event
+    Cell = Cell_division(Cell,Parents_Index(Index));
     
-     %% Updating cell clock after cell division (excluding daughter cells)
+    % Updating cell clock (excluding daughter cells) after cell division
     for i=1:Total_Cell_Population-2 %  minus 2 is for the daughter cells
         Cell(i).Clock = Cell(i).Clock + Time_step;
     end
     
-    %     return % Exiting from the function after cell division event
-    % end
-    
-else    
-    %% Updating cell clock assuming one from following event occurs
-    for i=1:Total_Cell_Population
-        Cell(i).Clock = Cell(i).Clock + Time_step;
-    end
-    
-    %% Choosing event from Immigration, replication, Conjugation and Flushing
+else % Choosing event from Immigration, replication, Conjugation and Flushing
     % normalized Cumulative distribution generation
     Propensity_CDF = reshape(cumsum(Propensity_Matrix(:)/sum(Propensity_Matrix(:))),[], size(Propensity_Matrix,2));
     % Identifying event and the cell in which the event occurs
@@ -60,5 +52,10 @@ else
         otherwise % Cell flushes out
             Cell(Cell_Index) = [];
             Total_Cell_Population = Total_Cell_Population - 1;
+    end
+    
+    % Updating cell clock after an event occurs
+    for i=1:Total_Cell_Population
+        Cell(i).Clock = Cell(i).Clock + Time_step;
     end
 end

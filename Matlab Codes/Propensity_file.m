@@ -9,31 +9,34 @@ Type = {Cell.Type};
 %% Identifying donors 
 % Both Donor and Transconjugant cells are capable for Engineered Plasmid conjuation
 D_Cells_Index = find(E ~= 0 & strcmp(Type,'Donor Cells'));
-T_Cells_Index = find(E ~= 0 & strcmp(Type,'Recipient Cells'));
+T_Cells_Index = find(E ~= 0 & strcmp(Type,'Recipient Cells')); % Includes cured cells
 
 %% Identifying recepients
 R_Cells_Index = find(E == 0 & strcmp(Type,'Recipient Cells'));
 
+%% Length vector for calculation (Keep the order in D R T)
+L = [length(D_Cells_Index); length(R_Cells_Index); length(T_Cells_Index)];
+
 %% Propensity of Immigration (or Birth) of Cells
-Propensity_Immigration_D = Rates.Id*ones(1,Total_Cell_Population);
-Propensity_Immigration_R = Rates.Ir*ones(1,Total_Cell_Population);
+Propensity_Immigration_D = zeros(1,Total_Cell_Population);
+Propensity_Immigration_R = zeros(1,Total_Cell_Population);
+Propensity_Immigration_D(end) = Rates.Id; %Not for each cells but for the entire system
+Propensity_Immigration_R(end) = Rates.Ir; %Not for each cells but for the entire system
 
 %% Propensity of Plsamid Replication
 Propensity_E_Plasmid_Replication = E.*Plasmid_Rep_Propensity(E,Clock);
 Propensity_T_Plasmid_Replication = T.*Plasmid_Rep_Propensity((Rates.alpha*E+T),Clock);
 
-%% Propensity of Conjugation
+%% Propensity of Plasmid Conjugation
 Propensity_Conjugation = zeros(1,Total_Cell_Population);
-Propensity_Conjugation(R_Cells_Index) = (Rates.Conjugation_Donors*length(D_Cells_Index)...
-                                      + Rates.Conjugation_Transconjugants*length(T_Cells_Index))*length(R_Cells_Index);
+Propensity_Conjugation(R_Cells_Index) = (Rates.Conjugation_Donors*L(1)...
+                                      + Rates.Conjugation_Transconjugants*L(3));
                                     
-%% Propensity of Flushing
-L = [length(D_Cells_Index); length(R_Cells_Index); length(T_Cells_Index)];
-
-Propensity_Cell_Flushing = zeros(1,Total_Cell_Population);
-Propensity_Cell_Flushing(D_Cells_Index) = Rates.G(1)*L(1)+Rates.r(1)*L(1)*(Rates.D_Flushing*L);
-Propensity_Cell_Flushing(R_Cells_Index) = Rates.G(2)*L(2)+Rates.r(2)*L(2)*(Rates.R_Flushing*L);
-Propensity_Cell_Flushing(T_Cells_Index) = Rates.G(3)*L(3)+Rates.r(3)*L(3)*(Rates.T_Flushing*L);
+%% Propensity of Cell Death
+Propensity_Cell_Death = zeros(1,Total_Cell_Population);
+Propensity_Cell_Death(D_Cells_Index) = Rates.F(1)*(Rates.D_Flushing*L);
+Propensity_Cell_Death(R_Cells_Index) = Rates.F(2)*(Rates.R_Flushing*L);
+Propensity_Cell_Death(T_Cells_Index) = Rates.F(3)*(Rates.T_Flushing*L);
 
 %% Propensity matrix Generation
 Propensity_Matrix = [Propensity_Immigration_D;
@@ -41,5 +44,5 @@ Propensity_Matrix = [Propensity_Immigration_D;
                     Propensity_E_Plasmid_Replication;
                     Propensity_T_Plasmid_Replication;
                     Propensity_Conjugation;
-                    Propensity_Cell_Flushing]';
+                    Propensity_Cell_Death]';
 end

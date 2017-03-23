@@ -24,16 +24,9 @@ tic;    iteration = 1;   Current_Time = 0;    Cured_Cell_Ratio = 0;
 % Analysis of the Initial System
 Data_Analysis
 
-while Current_Time < Final_Time && Cured_Cell_Ratio < Final_Cured_Cell_Ratio
-
-    % Cheking for empty system    
-    Total_Cell_Population = size(Cell,2);
-    if Total_Cell_Population == 0
-        disp('All Cells in the system are flushed away. Exiting.....');
-        break
-    end
+while Current_Time < Final_Time %&& Cured_Cell_Ratio < Final_Cured_Cell_Ratio
     
-    % Propensities
+    % Propensity Calculation
     Propensity_Matrix = Propensity_file(Cell);
     
     % Identifying next state of the Cell and timestep
@@ -45,7 +38,7 @@ while Current_Time < Final_Time && Cured_Cell_Ratio < Final_Cured_Cell_Ratio
     % Simulation time Update
     Current_Time = Simulation_time(iteration-1) + Time_step;
     Simulation_time(1,iteration) = Current_Time;
-
+    
     % Analysis of the Cell dynamics
     Data_Analysis
     
@@ -67,7 +60,7 @@ if n > iteration
     R_Cell_Dynamics_Matrix(:,iteration+1:n) = [];
     Ratio_Matrix(:,iteration+1:n) = [];
 end
-% 
+%
 % %%
 % figure(1)
 % plot(Simulation_time',D_Cell_Dynamics_Matrix')
@@ -82,9 +75,9 @@ R_Cell_legendInfo = {'R', 'RT_0', 'RE_0T_0','RET_0','RE_0T','RET'};
 legend(R_Cell_legendInfo)
 Figure_Setup
 
-%%
-figure(3)
-plot(Simulation_time',Ratio_Matrix')
-Ratio_legendInfo = {'Transconjugants','Cured'};
-legend(Ratio_legendInfo)
-Figure_Setup
+% %%
+% figure(3)
+% plot(Simulation_time',Ratio_Matrix')
+% Ratio_legendInfo = {'Transconjugants','Cured'};
+% legend(Ratio_legendInfo)
+% Figure_Setup

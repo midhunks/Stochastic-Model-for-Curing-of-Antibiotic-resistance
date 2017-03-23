@@ -21,7 +21,7 @@ for i = 1:Initial.Total_Cell_Population
     if i <= Initial.D_Cell_Population
         Cell(i).Type = 'Donor Cells';
         Cell(i).E_Plasmid_Population = E_Plasmid_population(i);
-        Cell(i).T_Plasmid_Population = 0; 
+        Cell(i).T_Plasmid_Population = 0;
         % Cell(i).T_Plasmid_Population = Initial_T_Plasmid_population(i); % If Initially Donor Cells have some Target Plasmids
     else
         Cell(i).Type = 'Recipient Cells';

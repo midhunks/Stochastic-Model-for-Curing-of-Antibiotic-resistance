@@ -1,12 +1,14 @@
-function Cell = Cell_division(Cell,Index,Time_step)
+function Cell = Cell_division(Cell,Index)
 global Mean_Cell_cycle Cell_cycle_Variability Total_Cell_Population
 
 %% Parent Cell
 Cell_temp=Cell(Index);
+
 %% Removal of parent cell and adding two daughter cells
 Cell(Index)=[]; % Removal of Parent Cell
-Daughter_index = (Total_Cell_Population-1) +[1 2];%Index of Daughter Cells
-Total_Cell_Population = Total_Cell_Population + 1; 
+
+Daughter_index = Total_Cell_Population + [0 1]; % Index of Daughter Cells
+Total_Cell_Population = Total_Cell_Population + 1; %T-1(parent)+2(daughters)
 
 %% Plasmid selection in Daughter cells
 E_pop=Cell_temp.E_Plasmid_Population;
@@ -33,8 +35,8 @@ Cell(Daughter_index(1)).Type = Cell_temp.Type;
 Cell(Daughter_index(2)).Type = Cell_temp.Type;
 
 %% Setting Cell Cycle and age of Daughter cells
-Cell(Daughter_index(1)).Cycle = random('normal',Mean_Cell_cycle,Cell_cycle_Variability);%Mean_Cell_cycle + random('uniform',-1,1)*Cell_cycle_Variability;
-Cell(Daughter_index(2)).Cycle = random('normal',Mean_Cell_cycle,Cell_cycle_Variability);%Mean_Cell_cycle + random('uniform',-1,1)*Cell_cycle_Variability;
+Cell(Daughter_index(1)).Cycle = random('normal',Mean_Cell_cycle,Cell_cycle_Variability);
+Cell(Daughter_index(2)).Cycle = random('normal',Mean_Cell_cycle,Cell_cycle_Variability);
 
 %% Reseting Clock of Daughter Cells
 Cell(Daughter_index(1)).Clock=0;
