@@ -1,7 +1,7 @@
 function New_Cell = Immigration_Process(Type)
 global Initial Mean_Cell_cycle Cell_cycle_Variability
 New_Cell.Type = Type;
-if strcmp(Type,'Donor Cells')
+if Type == 1 %strcmp(Type,'Donor Cells')
     New_Cell.E_Plasmid_Population = poissrnd(Initial.Mean_E_Plasmid_Population,1);
     New_Cell.T_Plasmid_Population = 0;    
 else

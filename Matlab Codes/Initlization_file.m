@@ -19,14 +19,14 @@ T_Plasmid_population = poissrnd(Initial.Mean_E_Plasmid_Population,Initial.Total_
 Cell = struct;
 for i = 1:Initial.Total_Cell_Population
     if i <= Initial.D_Cell_Population
-        Cell(i).Type = 'Donor Cells';
+        Cell(i).Type = 1; %'Donor Cells';
         Cell(i).E_Plasmid_Population = E_Plasmid_population(i);
         Cell(i).T_Plasmid_Population = 0;
-        % Cell(i).T_Plasmid_Population = Initial_T_Plasmid_population(i); % If Initially Donor Cells have some Target Plasmids
+        % Cell(i).T_Plasmid_Population = T_Plasmid_population(i); % If Initially Donor Cells have some Target Plasmids
     else
-        Cell(i).Type = 'Recipient Cells';
+        Cell(i).Type = 2;%'Recipient Cells';
         Cell(i).E_Plasmid_Population = 0;
-        % Cell(i).E_Plasmid_Population =Initial_E_Plasmid_population(i); % If Initially Target Cells have some Enginneered Plasmids
+%         Cell(i).E_Plasmid_Population = E_Plasmid_population(i); % If Initially Target Cells have some Enginneered Plasmids
         Cell(i).T_Plasmid_Population = T_Plasmid_population(i);
     end
     

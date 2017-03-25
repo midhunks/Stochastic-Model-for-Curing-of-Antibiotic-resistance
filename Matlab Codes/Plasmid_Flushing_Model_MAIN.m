@@ -13,18 +13,19 @@ Initial.Cell = Cell; % Saving Initial Setup
 
 % Preallocation of variables
 n=1e6; % Reduce this number if your system's memory is low
-Simulation_time = zeros(1,n);
-D_Cell_Dynamics_Matrix = zeros(3,n);
-R_Cell_Dynamics_Matrix = zeros(6,n);
-Ratio_Matrix = zeros(2,n);
+Cell_Dynamics(n).E_Plasmid_Population = struct;
+Cell_Dynamics(n).T_Plasmid_Population = struct;
+Cell_Dynamics(n).Type = struct;
+Cell_Dynamics(n).Time = struct;
 
 %% System Dynamics
 tic;    iteration = 1;   Current_Time = 0;    Cured_Cell_Ratio = 0;
 
-% Analysis of the Initial System
-Data_Analysis
+% Storing Initial data of the System
+Data_Storing
 
-while Current_Time < Final_Time %&& Cured_Cell_Ratio < Final_Cured_Cell_Ratio
+while Cured_Cell_Ratio < Final_Cured_Cell_Ratio %&& Current_Time < Final_Time
+    flag_iteration_completed = 0;
     
     % Propensity Calculation
     Propensity_Matrix = Propensity_file(Cell);
@@ -36,48 +37,37 @@ while Current_Time < Final_Time %&& Cured_Cell_Ratio < Final_Cured_Cell_Ratio
     iteration = iteration+1;
     
     % Simulation time Update
-    Current_Time = Simulation_time(iteration-1) + Time_step;
-    Simulation_time(1,iteration) = Current_Time;
+    Previous_time = Current_Time;
+    Current_Time = Previous_time + Time_step;
     
-    % Analysis of the Cell dynamics
-    Data_Analysis
+    % Saving the data of Cell dynamics
+    Data_Storing
     
     % Cured Cells Ratio
-    Cured_Cell_Ratio = Ratio_Matrix(2,iteration);
+    R_Index = find(Type == 2);% Recipients
+    RT0_index = find(T(R_Index)==0); % Recipients with no Antibiotic-Resistant Plasmids
+    Cured_Cell_Ratio = length(RT0_index)/length(R_Index);
     
     %To check the progress
-    if rem(iteration,1e4)==0
-        fprintf('Simulation passed %.2f units of time\n', Current_Time);
+    if rem(iteration,1e1)==0        
+        pause
         fprintf('Computation took %.2f seconds\n', toc);
+        fprintf('%.2f percentage of cells are cured in %.2f units of time\n',100*Cured_Cell_Ratio,Current_Time);
     end
+    flag_iteration_completed = 1;
 end
-fprintf('Gillespie Algorithm finished in %.2f seconds\n', toc);
+fprintf('\n\n Gillespie Algorithm finished in %.2f seconds with %d iterations\n\n', toc,iteration);
 
 %% Remove unneccessary area prelocated in variables
 if n > iteration
-    Simulation_time(:,iteration+1:n) = [];
-    D_Cell_Dynamics_Matrix(:,iteration+1:n) = [];
-    R_Cell_Dynamics_Matrix(:,iteration+1:n) = [];
-    Ratio_Matrix(:,iteration+1:n) = [];
+    if flag_iteration_completed == 0
+        iteration = iteration-1;
+    end    
+    Cell_Dynamics(iteration+1:n)=[];
 end
-%
-% %%
-% figure(1)
-% plot(Simulation_time',D_Cell_Dynamics_Matrix')
-% D_Cell_legendInfo = {'D', 'DE', 'DE_0'};
-% legend(D_Cell_legendInfo)
-% Figure_Setup
 
-% %%
-figure(2)
-plot(Simulation_time',R_Cell_Dynamics_Matrix')
-R_Cell_legendInfo = {'R', 'RT_0', 'RE_0T_0','RET_0','RE_0T','RET'};
-legend(R_Cell_legendInfo)
-Figure_Setup
+%% Data Analysis and plotting
+Data_Analysis
 
-% %%
-% figure(3)
-% plot(Simulation_time',Ratio_Matrix')
-% Ratio_legendInfo = {'Transconjugants','Cured'};
-% legend(Ratio_legendInfo)
-% Figure_Setup
+%% View Time of functions
+profile viewer
