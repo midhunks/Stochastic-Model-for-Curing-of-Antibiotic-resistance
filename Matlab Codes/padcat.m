@@ -84,9 +84,9 @@ maxSZ = max(SZ) ;    % probable size of the longest vector
 %  - [1 X] for all row vectors
 %  - [X Y] otherwise (so padcat will not work!)
 
-if ~any(maxSZ == 1),  % hmm, not all elements are 1-by-N or N-by-1
+if ~any(maxSZ == 1)  % hmm, not all elements are 1-by-N or N-by-1
     % 2 options ...
-    if any(maxSZ==0),
+    if any(maxSZ==0)
         % 1) all inputs are empty
         M  = [] ;
         return
@@ -99,7 +99,7 @@ if ~any(maxSZ == 1),  % hmm, not all elements are 1-by-N or N-by-1
     end
 end
 
-if nargin == 1,
+if nargin == 1
     % single input, nothing to concatenate ..
     M = varargin{1} ;
 else
@@ -110,10 +110,10 @@ else
     % we will use linear indexing, which operates along columns. We apply a
     % transpose at the end if the input were row vectors.
 
-    if maxSZ(dim) == 1,
+    if maxSZ(dim) == 1
         % if all inputs are scalars, ...
         M = X ;   % copy the list
-    elseif all(SZ(:,dim)==SZ(1,dim)),
+    elseif all(SZ(:,dim)==SZ(1,dim))
         % all vectors have the same length
         M = reshape(X,SZ(1,dim),[]) ;% copy the list and reshape
     else
@@ -132,7 +132,7 @@ else
         % If we need to return position of the non-fillers we will get them
         % now. We cannot do it afterwards, since NaNs may be present in the
         % inputs.
-        if nargout>1,
+        if nargout>1
             TF = ~M ;
             % and make use of this logical array
             M(~TF) = NaN ; % put the fillers in
@@ -143,14 +143,14 @@ else
         end
     end
 
-    if dim == 2,
+    if dim == 2
         % the inputs were row vectors, so transpose
         M = M.' ;
         TF = TF.' ; % was initialized as empty if not requested
     end
 end % nargin == 1
 
-if nargout > 1 && isempty(TF),
+if nargout > 1 && isempty(TF)
     % in this case, the inputs were all empty, all scalars, or all had the
     % same size.
     TF = true(size(M)) ;

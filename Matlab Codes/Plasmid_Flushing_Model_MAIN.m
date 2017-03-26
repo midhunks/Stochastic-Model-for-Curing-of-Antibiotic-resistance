@@ -5,18 +5,7 @@ Start_UP % clearing variables and setting defaults
 Parameters_Data % File that handle parameters of the model
 
 %% Initialization
-global Total_Cell_Population
-Total_Cell_Population = Initial.Total_Cell_Population;
-
 Cell = Initlization_file(Initial); % Setting up the initial system
-Initial.Cell = Cell; % Saving Initial Setup
-
-% Preallocation of variables
-n=1e6; % Reduce this number if your system's memory is low
-Cell_Dynamics(n).E_Plasmid_Population = struct;
-Cell_Dynamics(n).T_Plasmid_Population = struct;
-Cell_Dynamics(n).Type = struct;
-Cell_Dynamics(n).Time = struct;
 
 %% System Dynamics
 tic;    iteration = 1;   Current_Time = 0;    Cured_Cell_Ratio = 0;
@@ -49,16 +38,16 @@ while Cured_Cell_Ratio < Final_Cured_Cell_Ratio %&& Current_Time < Final_Time
     Cured_Cell_Ratio = length(RT0_index)/length(R_Index);
     
     %To check the progress
-    if rem(iteration,1e1)==0        
-        pause
+    if rem(iteration,1e4)==0
         fprintf('Computation took %.2f seconds\n', toc);
         fprintf('%.2f percentage of cells are cured in %.2f units of time\n',100*Cured_Cell_Ratio,Current_Time);
     end
     flag_iteration_completed = 1;
 end
-fprintf('\n\n Gillespie Algorithm finished in %.2f seconds with %d iterations\n\n', toc,iteration);
+fprintf('\nSSA finished with %d iterations in %.2f seconds\n', iteration, toc);
+fprintf('\nCured: %.2f percentage\n Time: %.2f seconds\n\n', 100*Cured_Cell_Ratio, Current_Time);
 
-%% Remove unneccessary area prelocated in variables
+%% Remove unneccessary area preallocated in variables
 if n > iteration
     if flag_iteration_completed == 0
         iteration = iteration-1;
