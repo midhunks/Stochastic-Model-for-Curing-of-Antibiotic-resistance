@@ -1,0 +1,34 @@
+%% Time
+Time = [Cell_Dynamics{:}.Time];
+%%
+h(1)=figure(1);
+plot(Time',Cell_Dynamics_Matrix')
+Legend = legend(Cell_legendInfo);
+Legend.Orientation = 'horizontal';
+Legend.Location = 'NorthOutside';
+Figure_Setup
+
+BaseFilename = ['Cell_Dynamics ',datestr(now,'dd-mmm-yyyy HH-MM-SS AM')];
+if ispc  % checking OS
+    subdirectory = '\Outputs\';
+else
+    subdirectory = '/Outputs/';
+end
+
+saveas(gcf,[Folder,FileName,'.png'],'png');
+saveas(gcf,[Folder,FileName,'.eps'],'epsc');
+
+h(2)=figure(2);
+plot(Time',Ratio_Matrix')
+Legend = legend(Ratio_legendInfo);
+Legend.Orientation = 'horizontal';
+Legend.Location = 'NorthOutside';
+Figure_Setup
+
+FileName=['Cell_Dynamics (Ratio) ',datestr(now,'dd-mmm-yyyy HH-MM-SS AM')];
+saveas(gcf,[Folder,FileName,'.png'],'png');
+saveas(gcf,[Folder,FileName,'.eps'],'epsc');
+
+% Saving figure
+FileName=['Cell_Dynamics ',datestr(now,'dd-mmm-yyyy HH-MM-SS AM')];
+savefig(h,[Folder,FileName,'.fig'],'compact');
