@@ -6,7 +6,7 @@ Parameters_Data % File that handle parameters of the model
 
 %% Initialization
 Cell = Initlization_file(Initial); % Setting up the initial system
-
+Initial.Cell = Cell; % Saving Initial Setup
 %% System Dynamics
 tic;    iteration = 1;   Current_Time = 0;    Cured_Cell_Ratio = 0;
 
@@ -38,14 +38,15 @@ while Cured_Cell_Ratio < Final_Cured_Cell_Ratio %&& Current_Time < Final_Time
     Cured_Cell_Ratio = length(RT0_index)/length(R_Index);
     
     %To check the progress
-    if rem(iteration,1e4)==0
-        fprintf('Computation took %.2f seconds\n', toc);
-        fprintf('%.2f percentage of cells are cured in %.2f units of time\n',100*Cured_Cell_Ratio,Current_Time);
+    if rem(iteration,1e5)==0        
+        fprintf('%.2f%% of cells are cured in %.3f hours (Computational time - %.1f seconds)\n',...
+            100*Cured_Cell_Ratio,Current_Time,toc);
     end
     flag_iteration_completed = 1;
 end
-fprintf('\nSSA finished with %d iterations in %.2f seconds\n', iteration, toc);
-fprintf('\nCured: %.2f percentage\n Time: %.2f seconds\n\n', 100*Cured_Cell_Ratio, Current_Time);
+fprintf('\nSSA finished in %.1f seconds with %d iterations\n', toc, iteration);
+fprintf('\nCured: %.2f%% of cells\n Time: %.3f hours\n\n',...
+        100*Cured_Cell_Ratio, Current_Time);
 
 %% Remove unneccessary area preallocated in variables
 if n > iteration

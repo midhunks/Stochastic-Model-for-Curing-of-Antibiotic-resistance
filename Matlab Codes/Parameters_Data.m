@@ -1,6 +1,6 @@
 global Initial Mean_Cell_cycle Rates Cell_cycle_Variability Total_Cell_Population
 %% Initial number of cells
-Initial.D_Cell_Population = 0e1; % Number of Donor cells with Engineered of plasmids
+Initial.D_Cell_Population = 0e2; % Number of Donor cells with Engineered of plasmids
 Initial.R_Cell_Population = 1e2; % Number of Target cells with Target plasmids
 Initial.Total_Cell_Population = Initial.D_Cell_Population + Initial.R_Cell_Population;
 Total_Cell_Population = Initial.Total_Cell_Population;
@@ -39,13 +39,13 @@ Rates.F = 1e-2*[16 12 16]; % In ODE model, these elements represents rd/Kd rr/Kr
 Rates.D_Flushing = 1/(1+Initial.Total_Cell_Population)*[ 1 1]; % In ODE model, these elements represents Bdd,Bdr Bdt
 Rates.R_Flushing = 1/(1+Initial.Total_Cell_Population)*[.5 1]; % In ODE model, these elements represents Brd,Brr Brt
 
+Initial.Rate = Rates;
+
 %% Boundary Conditions
 Final_Time = 1000;%20*Mean_Cell_cycle; % Final Time
 Final_Cured_Cell_Ratio = 0.99; % Final Ratio of Cured Cell's population in the system
 
-Initial.Cell = Cell; % Saving Initial Setup
-Initial.Rate = Rates;
-
+latency={Initial};
 FileName=['Inital Data ',datestr(now,'dd-mmm-yyyy HH-MM-SS AM'),'.mat'];
 save(FileName, 'latency')
 
