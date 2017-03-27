@@ -1,13 +1,9 @@
-%% Generating a cell from the struct
-tic
-Cell_Dynamics ={Cell_Dynamics};
 %% Vector Assignment for calculation
 E = padcat(Cell_Dynamics{:}.E_Plasmid_Population);
 T = padcat(Cell_Dynamics{:}.T_Plasmid_Population);
 Type = padcat(Cell_Dynamics{:}.Type);
-Time = [Cell_Dynamics{:}.Time];
+
 %% Logical matrices creation
-tic
 E_mat= E ~=0;
 E0_mat= E ==0;
 T_mat= T ~=0;
@@ -15,6 +11,7 @@ T0_mat= T ==0;
 D_mat = Type == 1;
 R_mat = Type == 2;
 
+clear E T Type 
 %% Identifying the number of occurances in each case
 % N_D = sum(D_mat,2);
 N_DE = Logical_Intersect(cat(3,D_mat,E_mat));
@@ -30,7 +27,8 @@ N_RET = Logical_Intersect(cat(3,R_mat,E_mat,T_mat));
 N_RE0T = Logical_Intersect(cat(3,R_mat,E0_mat,T_mat));
 % N_RE0T0 = Logical_Intersect(cat(3,R_mat,E0_mat,T0_mat));
 
-clear Cell_Dynamics_Matrix Cell_legendInfo
+clear E_mat E0_mat T_mat T0_mat D_mat R_mat
+
 Cell_Dynamics_Matrix = [
 %                         N_D';
                         N_DE';
@@ -45,7 +43,8 @@ Cell_Dynamics_Matrix = [
 %                         N_RET0';
 %                         N_RE0T0';
                         ]';
-                    
+clear  N_D N_DE N_RE0T N_DE0 N_RE N_RE0 N_RT N_RET0 N_RE0T0
+
 Cell_legendInfo = { 
 %                     'D';
                     'Donors with E';
@@ -66,35 +65,5 @@ Cell_legendInfo = {
 Ratio_Matrix = [N_RET./N_R,N_RT0./N_R];
 Ratio_legendInfo = {'Transconjugants','Cured'};
 
-fprintf('Data analysis finished in %.2f second\n', toc)
-%%
-h(1)=figure(1);
-plot(Time',Cell_Dynamics_Matrix')
-Legend = legend(Cell_legendInfo);
-Legend.Orientation = 'horizontal';
-Legend.Location = 'NorthOutside';
-Figure_Setup
+clear N_RET N_RT0 N_R
 
-Folder = ['C:\Users\mkathana\Dropbox\Study\UWaterloo\Brian\MATLAB codes'...
-    '\plasmid dynamics\Midhun\0.Plasmid_conjugation\Flushing Model'...
-    '\Stochastic-Model-for-Curing-of-Antibiotic-resistance\Matlab Codes'...
-    '\Outputs\'];
-FileName=['Cell_Dynamics ',datestr(now,'dd-mmm-yyyy HH-MM-SS AM')];
-
-saveas(gcf,[Folder,FileName,'.png']);
-saveas(gcf,[Folder,FileName,'.eps']);
-
-h(2)=figure(2);
-plot(Time',Ratio_Matrix')
-Legend = legend(Ratio_legendInfo);
-Legend.Orientation = 'horizontal';
-Legend.Location = 'NorthOutside';
-Figure_Setup
-
-FileName=['Cell_Dynamics (Ratio) ',datestr(now,'dd-mmm-yyyy HH-MM-SS AM')];
-saveas(gcf,[Folder,FileName,'.png']);
-saveas(gcf,[Folder,FileName,'.eps']);
-
-% Saving figure
-FileName=['Cell_Dynamics ',datestr(now,'dd-mmm-yyyy HH-MM-SS AM')];
-savefig(h,[Folder,FileName,'.fig']);

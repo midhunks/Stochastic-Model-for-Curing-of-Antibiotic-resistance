@@ -67,8 +67,14 @@ if n > iteration
     Cell_Dynamics(iteration+1:n)=[];
 end
 
+%% Converting the data to cell from struct
+Cell_Dynamics ={Cell_Dynamics};
+
 %% Data Analysis and plotting
+tic
 Data_Analysis
 
-%% View Time of functions
-profile viewer
+fprintf('Data analysis finished in %.2f seconds\n', toc)
+
+%% Plotting Data
+Plotting_File

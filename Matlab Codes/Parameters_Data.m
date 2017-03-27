@@ -43,10 +43,9 @@ Final_Cured_Cell_Ratio = 0.99; % Final Ratio of Cured Cell's population in the s
 
 %% Saving Data
 FileName = ['C:\Users\mkathana\Dropbox\Study\UWaterloo\Brian\MATLAB codes'...
-    '\plasmid dynamics\Midhun\0.Plasmid_conjugation\Flushing Model'...
-    '\Stochastic-Model-for-Curing-of-Antibiotic-resistance\Matlab Codes'...
-    '\Outputs\Inital Data ',datestr(now,'dd-mmm-yyyy HH-MM-SS AM'),'.mat'];
+    '\plasmid dynamics\Midhun\Stochastic-Model-for-Curing-of-Antibiotic-resistance'...
+    '\Matlab Codes\Outputs\Inital Data ',datestr(now,'dd-mmm-yyyy HH-MM-SS AM'),'.mat'];
 
-latency={Initial};
-save(FileName, 'latency');
+Initial_Data={Initial};
+save(FileName, 'Initial_Data');
 
