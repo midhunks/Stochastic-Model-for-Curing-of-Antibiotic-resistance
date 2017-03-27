@@ -65,7 +65,6 @@ Cell_legendInfo = {
 
 Ratio_Matrix = [N_RET./N_R,N_RT0./N_R];
 Ratio_legendInfo = {'Transconjugants','Cured'};
-toc
 
 fprintf('Data analysis finished in %.2f second\n', toc)
 %%

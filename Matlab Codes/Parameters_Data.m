@@ -10,7 +10,6 @@ Initial.Mean_E_Plasmid_Population = 1e2; % Mean Plasmid_population in Donor cell
 Initial.Mean_T_Plasmid_Population = 1e2; % Mean Plasmid_population in Reciepient cells
 
 %% Event Rates
-
 % Plasmid Replication Rates
 Stationary_Plasmid_Copynumber = 1e2;% Steady state population of Plasmids
 Rates.Ktr = 1.2e2; % Minimum rate should be 1/Mean_Cell_cycle for growth
@@ -22,9 +21,6 @@ Rates.alpha = 1e-2*Rates.Ktr; % Inhibition affinity on E Plasmid
 Mean_Cell_cycle = 4.3;%Stationary_Plasmid_Copynumber/(2*Rates.K*Rates.Ktr)%4.3; % Average cell devision time in hours
 Cell_cycle_Variability = 0.1*Mean_Cell_cycle; % 10 percentage of variability in cell cycle
 Initial.Mean_CellCycle = Mean_Cell_cycle;
-
-Expected_Num_Gen_for_Curing = 40
-Expected_Time_for_Curing = Expected_Num_Gen_for_Curing * Mean_Cell_cycle
 
 % Conjugation Rates
 Rates.Conjugation_Donors = 4e-2;%Initial.Total_Cell_Population; % Plasmid Conjugation Rate 1.2*10e-10
@@ -46,7 +42,6 @@ Final_Time = 1000;%20*Mean_Cell_cycle; % Final Time
 Final_Cured_Cell_Ratio = 0.99; % Final Ratio of Cured Cell's population in the system
 
 %% Saving Data
-
 FileName = ['C:\Users\mkathana\Dropbox\Study\UWaterloo\Brian\MATLAB codes'...
     '\plasmid dynamics\Midhun\0.Plasmid_conjugation\Flushing Model'...
     '\Stochastic-Model-for-Curing-of-Antibiotic-resistance\Matlab Codes'...
