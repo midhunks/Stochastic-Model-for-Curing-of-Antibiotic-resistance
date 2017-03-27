@@ -45,14 +45,20 @@ Initial.Rate = Rates;
 Final_Time = 1000;%20*Mean_Cell_cycle; % Final Time
 Final_Cured_Cell_Ratio = 0.99; % Final Ratio of Cured Cell's population in the system
 
-latency={Initial};
-FileName=['Inital Data ',datestr(now,'dd-mmm-yyyy HH-MM-SS AM'),'.mat'];
-save(FileName, 'latency')
-
 % Preallocation of variables
 n=1e6; % Reduce this number if your system's memory is low
 Cell_Dynamics(n).E_Plasmid_Population = struct;
 Cell_Dynamics(n).T_Plasmid_Population = struct;
 Cell_Dynamics(n).Type = struct;
 Cell_Dynamics(n).Time = struct;
+
+%% Saving Data
+
+FileName = ['C:\Users\mkathana\Dropbox\Study\UWaterloo\Brian\MATLAB codes'...
+    '\plasmid dynamics\Midhun\0.Plasmid_conjugation\Flushing Model'...
+    '\Stochastic-Model-for-Curing-of-Antibiotic-resistance\Matlab Codes'...
+    '\Outputs\Inital Data ',datestr(now,'dd-mmm-yyyy HH-MM-SS AM'),'.mat'];
+
+latency={Initial};
+save(FileName, 'latency');
 

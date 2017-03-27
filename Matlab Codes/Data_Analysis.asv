@@ -1,15 +1,12 @@
-%% Vector Assignment for calculation
+%% Generating a cell from the struct
 tic
 Cell_Dynamics ={Cell_Dynamics};
-E = padcat(Dynamics{:}.E_Plasmid_Population);
-T = padcat(Dynamics{:}.T_Plasmid_Population);
-Type = padcat(Dynamics{:}.Type);
-Time = [Dynamics{:}.Time];
-[m,n]=size(Type);
-
-% clear Dynamics Cell_Dynamics
-toc
-%%
+%% Vector Assignment for calculation
+E = padcat(Cell_Dynamics{:}.E_Plasmid_Population);
+T = padcat(Cell_Dynamics{:}.T_Plasmid_Population);
+Type = padcat(Cell_Dynamics{:}.Type);
+Time = [Cell_Dynamics{:}.Time];
+%% Logical matrices creation
 tic
 E_mat= E ~=0;
 E0_mat= E ==0;
@@ -17,15 +14,13 @@ T_mat= T ~=0;
 T0_mat= T ==0;
 D_mat = Type == 1;
 R_mat = Type == 2;
-toc
 
-%%
-tic
+%% Identifying the number of occurances in each case
 % N_D = sum(D_mat,2);
 N_DE = Logical_Intersect(cat(3,D_mat,E_mat));
 % N_DE0 = Logical_Intersect(cat(3,D_mat,E_mat));
 
-% N_R = sum(R_mat,2);
+N_R = sum(R_mat,2);
 % N_RE = Logical_Intersect(cat(3,R_mat,E_mat));
 % N_RE0 = Logical_Intersect(cat(3,R_mat,E0_mat));
 % N_RT = Logical_Intersect(cat(3,R_mat,T_mat));
@@ -35,43 +30,44 @@ N_RET = Logical_Intersect(cat(3,R_mat,E_mat,T_mat));
 N_RE0T = Logical_Intersect(cat(3,R_mat,E0_mat,T_mat));
 % N_RE0T0 = Logical_Intersect(cat(3,R_mat,E0_mat,T0_mat));
 
+clear Cell_Dynamics_Matrix Cell_legendInfo
 Cell_Dynamics_Matrix = [
-%                         N_D...
-                        N_DE...
-%                         N_DE0...
-%                         N_R...
-%                         N_RE...
-%                         N_RE0...
-%                         N_RT...
-                        N_RT0...
-                        N_RET...
-%                         N_RET0...
-                        N_RE0T...
-%                         N_RE0T0...
-                        ];
+%                         N_D';
+                        N_DE';
+                        N_RE0T';
+%                         N_DE0';
+%                         N_R';
+%                         N_RE';
+%                         N_RE0';
+%                         N_RT';
+                        N_RET';
+                        N_RT0';
+%                         N_RET0';
+%                         N_RE0T0';
+                        ]';
                     
 Cell_legendInfo = { 
-%                     'D',
-                    'Donors with E',
-%                     'DE_0',
-%                     'R',
-%                     'RE',
-%                     'RE_0',
-%                     'RT',
-                    'Cured',
-                    'Transconjugants',
-%                     'RET_0',
-                    'Recipients with no E',
-%                     'RE_0T_0',
+%                     'D';
+                    'Donors with E';
+                    'Recipients with no E';
+%                     'DE_0';
+%                     'Recipients';
+%                     'RE';
+%                     'RE_0';
+%                     'RT';
+                    'Transconjugants';
+                    'Cured';
+%                     'RET_0';
+%                     'RE_0T_0';
                     };
-toc
 
 %%
-tic
-Ratio_Matrix = [N_RT0./N_R, N_RET./N_R];
-Ratio_legendInfo = {'Cured','Transconjugants'};
+
+Ratio_Matrix = [N_RET./N_R,N_RT0./N_R];
+Ratio_legendInfo = {'Transconjugants','Cured'};
 toc
 
+fprintf('Data analysis finished in %.2f second\n', toc)
 %%
 h(1)=figure(1);
 plot(Time',Cell_Dynamics_Matrix')
@@ -80,6 +76,18 @@ Legend.Orientation = 'horizontal';
 Legend.Location = 'NorthOutside';
 Figure_Setup
 
+FileName=['C:\Users\mkathana\Dropbox\Study\UWaterloo\Brian\MATLAB codes'...
+    '\plasmid dynamics\Midhun\0.Plasmid_conjugation\Flushing Model'...
+    '\Stochastic-Model-for-Curing-of-Antibiotic-resistance\Matlab Codes'...
+    '\Outputs\Cell_Dynamics ',datestr(now,'dd-mmm-yyyy HH-MM-SS AM'),'.png'];
+
+saveas(gcf,FileName);
+FileName=['C:\Users\mkathana\Dropbox\Study\UWaterloo\Brian\MATLAB codes'...
+    '\plasmid dynamics\Midhun\0.Plasmid_conjugation\Flushing Model'...
+    '\Stochastic-Model-for-Curing-of-Antibiotic-resistance\Matlab Codes'...
+    '\Outputs\Cell_Dynamics ',datestr(now,'dd-mmm-yyyy HH-MM-SS AM')];
+saveas(gcf,FileName);
+
 %%
 h(2)=figure(2);
 plot(Time',Ratio_Matrix')
@@ -87,7 +95,21 @@ Legend = legend(Ratio_legendInfo);
 Legend.Orientation = 'horizontal';
 Legend.Location = 'NorthOutside';
 Figure_Setup
+FileName=['C:\Users\mkathana\Dropbox\Study\UWaterloo\Brian\MATLAB codes'...
+    '\plasmid dynamics\Midhun\0.Plasmid_conjugation\Flushing Model'...
+    '\Stochastic-Model-for-Curing-of-Antibiotic-resistance\Matlab Codes'...
+    '\Outputs\Cell_Dynamics (Ratio)',datestr(now,'dd-mmm-yyyy HH-MM-SS AM'),'.png'];
+
+saveas(gcf,FileName);
+FileName=['C:\Users\mkathana\Dropbox\Study\UWaterloo\Brian\MATLAB codes'...
+    '\plasmid dynamics\Midhun\0.Plasmid_conjugation\Flushing Model'...
+    '\Stochastic-Model-for-Curing-of-Antibiotic-resistance\Matlab Codes'...
+    '\Outputs\Cell_Dynamics ',datestr(now,'dd-mmm-yyyy HH-MM-SS AM')];
+saveas(gcf,FileName,'epsc');
 
 %% Saving figure
-FileName=['Cell_Dynamics ',datestr(now,'dd-mmm-yyyy HH-MM-SS AM'),'.fig'];
+FileName=['C:\Users\mkathana\Dropbox\Study\UWaterloo\Brian\MATLAB codes'...
+    '\plasmid dynamics\Midhun\0.Plasmid_conjugation\Flushing Model'...
+    '\Stochastic-Model-for-Curing-of-Antibiotic-resistance\Matlab Codes'...
+    '\Outputs\Cell_Dynamics ',datestr(now,'dd-mmm-yyyy HH-MM-SS AM'),'.fig'];
 savefig(h,FileName);
