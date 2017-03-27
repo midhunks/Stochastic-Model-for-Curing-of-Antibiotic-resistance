@@ -53,7 +53,7 @@ while Cured_Cell_Ratio < Final_Cured_Cell_Ratio %&& Current_Time < Final_Time
             100*Cured_Cell_Ratio,Current_Time,toc);        
     end
     
-    flag_iteration_completed = 1;
+    flag_iteration_completed = flag_iteration_completed + 1;
 end
 fprintf('\nSSA finished in %.1f seconds with %d iterations\n', toc, iteration);
 fprintf('\nCured: %.2f%% of cells\n Time: %.3f hours\n\n',...

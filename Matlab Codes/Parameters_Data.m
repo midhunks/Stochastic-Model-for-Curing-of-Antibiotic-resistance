@@ -23,7 +23,7 @@ Cell_cycle_Variability = 0.1*Mean_Cell_cycle; % 10 percentage of variability in 
 Initial.Mean_CellCycle = Mean_Cell_cycle;
 
 % Conjugation Rates
-Rates.Conjugation_Donors = 4e-2;%Initial.Total_Cell_Population; % Plasmid Conjugation Rate 1.2*10e-10
+Rates.Conjugation_Donors = 1e-3;%Initial.Total_Cell_Population; % Plasmid Conjugation Rate 1.2*10e-10
 Rates.Conjugation_Transconjugants = 5e-1*Rates.Conjugation_Donors;%Initial.Total_Cell_Population; % Plasmid Conjugation Rate 1.2*10e-10
 
 % Immigration (Birth) of cells rates
@@ -40,12 +40,4 @@ Initial.Rate = Rates;
 %% Boundary Conditions
 Final_Time = 1000;%20*Mean_Cell_cycle; % Final Time
 Final_Cured_Cell_Ratio = 0.99; % Final Ratio of Cured Cell's population in the system
-
-%% Saving Data
-FileName = ['C:\Users\mkathana\Dropbox\Study\UWaterloo\Brian\MATLAB codes'...
-    '\plasmid dynamics\Midhun\Stochastic-Model-for-Curing-of-Antibiotic-resistance'...
-    '\Matlab Codes\Outputs\Inital Data ',datestr(now,'dd-mmm-yyyy HH-MM-SS AM'),'.mat'];
-
-Initial_Data={Initial};
-save(FileName, 'Initial_Data');
 

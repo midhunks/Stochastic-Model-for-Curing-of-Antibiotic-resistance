@@ -1,3 +1,14 @@
+%% Saving initial parameter Data
+BaseFilename = 'Inital Data ';
+Timestamp = datestr(now,'dd-mmm-yyyy HH-MM-SS AM');
+if ispc  % checking OS
+    Subdirectory = '\Outputs\';
+else
+    Subdirectory = '/Outputs/';
+end
+Initial_Data={Initial};
+save([pwd, Subdirectory, BaseFilename,Timestamp,'.mat'] , 'Initial_Data');
+
 %% Time
 Time = [Cell_Dynamics{:}.Time];
 %%
@@ -8,25 +19,19 @@ Legend.Orientation = 'horizontal';
 Legend.Location = 'NorthOutside';
 Figure_Setup
 
-Folder = ['C:\Users\mkathana\Dropbox\Study\UWaterloo\Brian\MATLAB codes'...
-    '\plasmid dynamics\Midhun\Stochastic-Model-for-Curing-of-Antibiotic-resistance'...
-    '\Matlab Codes\Outputs\'];
-FileName=['Cell_Dynamics ',datestr(now,'dd-mmm-yyyy HH-MM-SS AM')];
-
-saveas(gcf,[Folder,FileName,'.png']);
-saveas(gcf,[Folder,FileName,'.eps']);
-
 h(2)=figure(2);
 plot(Time',Ratio_Matrix')
 Legend = legend(Ratio_legendInfo);
 Legend.Orientation = 'horizontal';
-Legend.Location = 'NorthOutside';
+Legend.Location = 'NorthOutside';clc
 Figure_Setup
 
-FileName=['Cell_Dynamics (Ratio) ',datestr(now,'dd-mmm-yyyy HH-MM-SS AM')];
-saveas(gcf,[Folder,FileName,'.png']);
-saveas(gcf,[Folder,FileName,'.eps']);
+%% Saving figures in different formats
+BaseFilename = 'Cell_Dynamics ';
+saveas(h(1),[pwd,Subdirectory,BaseFilename, Timestamp,'.png'],'png');
+saveas(h(1),[pwd, Subdirectory, BaseFilename, '(Ratio)', Timestamp,'.png'],'png');
 
-% Saving figure
-FileName=['Cell_Dynamics ',datestr(now,'dd-mmm-yyyy HH-MM-SS AM')];
-savefig(h,[Folder,FileName,'.fig']);
+saveas(h(2),[pwd,Subdirectory,BaseFilename, Timestamp,'.eps'],'epsc');
+saveas(h(2),[pwd, Subdirectory, BaseFilename, Timestamp,'(Ratio)','.eps'],'epsc');
+
+savefig(h,[pwd, Subdirectory,BaseFilename, Timestamp,'.fig'],'compact');
