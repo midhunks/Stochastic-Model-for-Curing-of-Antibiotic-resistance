@@ -1,0 +1,28 @@
+function Cell = Initlization_file(Type, Num_Cells)
+global Initial Mean_Cell_cycle Cell_cycle_Variability
+
+%% Initial Age of each cell and Cell Cycle of each cell
+Age_flag = 1; %0 if all cells starts at zero age or 1 for a random age
+
+%% Initilizing New Cells
+%Assigning type, number of plasmids, type of plasmids, age, cycle, and
+%generation to each cells
+Cell = struct;
+for i = 1:Num_Cells
+    if Type == 1        
+        Cell(i).E_Plasmid_Population = poissrnd(Initial.Mean_E_Plasmid_Population,1);
+        Cell(i).T_Plasmid_Population = 0;
+        % Cell(i).T_Plasmid_Population = T_Plasmid_population(i); % If Initially Donor Cells have some Target Plasmids
+    else        
+        Cell(i).E_Plasmid_Population = 0;
+%         Cell(i).E_Plasmid_Population =
+%         poissrnd(Initial.Mean_E_Plasmid_Population,1); % If Initially Target Cells have some Target Plasmids
+        Cell(i).T_Plasmid_Population = poissrnd(Initial.Mean_E_Plasmid_Population,1);
+    end
+    
+    Cell(i).Type = Type; %'(1) Donor or (2) Recipient Cells'        
+    Cell(i).Cycle = random('normal',Mean_Cell_cycle,Cell_cycle_Variability);
+    Cell(i).Clock = Age_flag*rand*Cell(i).Cycle;
+    Cell(i).Generation = 1;
+end
+end
