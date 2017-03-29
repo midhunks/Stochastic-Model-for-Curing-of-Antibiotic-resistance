@@ -55,16 +55,20 @@ while Cured_Cell_Ratio < Final_Cured_Cell_Ratio %&& Current_Time < Final_Time
             n = n + n_update;
             PreAllocation_File            
         end
-        fprintf('%.2f%% of cells are cured in %.3f hours',...
-                '(Computational time - %.1f seconds)\n',...
-                100*Cured_Cell_Ratio,Current_Time,toc);        
+        fprintf('Cured             : %.2f%% of cells\n',100*Cured_Cell_Ratio);
+        fprintf('Current Time      : %.3f hours\n',Current_Time);
+        fprintf('Computation time  : %.1f seconds\n',toc);  
+        fprintf('Iterations        : %.d\n\n\n',iteration);
     end
     
     flag_iteration_completed = flag_iteration_completed + 1;
 end
-fprintf('\nSSA finished in %.1f seconds with %d iterations\n',...
-        '\nCured: %.2f%% of cells\n Time: %.3f hours\n\n',...
-        toc, iteration,100*Cured_Cell_Ratio, Current_Time);
+
+fprintf('\nSSA finished\n')
+fprintf('Cured             : %.2f%% of cells\n',100*Cured_Cell_Ratio);
+fprintf('Final Time        : %.3f hours\n',Current_Time);
+fprintf('Computation time  : %.1f seconds\n',toc);
+fprintf('Iterations        : %.d\n',iteration);
 
 %% Remove unneccessary area preallocated in variables
 if n > iteration
