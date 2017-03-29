@@ -35,12 +35,14 @@ else % Choosing event from Immigration, replication, Conjugation and Flushing
     [Cell_Index,Event_Index] = find(Propensity_CDF >= rand,1);
     
     switch Event_Index % Cell State updation according to event
-        case 1 % A new Donor Cell is added to the system
-            New_Cell = Immigration_Process(1);%('Donor Cells');
+        case 1 % A new (Type 1)Donor Cell is added to the system
+            Type = 1; % Donor Cell 
+            New_Cell = Initlization_file(Type,1);
             Total_Cell_Population = Total_Cell_Population + 1;
             Cell(Total_Cell_Population) = New_Cell;
-        case 2 % A new Recepient Cell is added to the system
-            New_Cell = Immigration_Process(2);%('Recipient Cells');
+        case 2 % A new (Type 2) Recepient Cell is added to the system
+            Type = 2; % Recepient Cell
+            New_Cell = Initlization_file(Type,1);
             Total_Cell_Population = Total_Cell_Population + 1;
             Cell(Total_Cell_Population) = New_Cell;
         case 3 % Engineered Plasmid Replication occurs

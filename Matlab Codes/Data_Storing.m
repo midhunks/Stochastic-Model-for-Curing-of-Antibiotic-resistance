@@ -1,7 +1,7 @@
 %% Dynamics of the system
 E = [Cell.E_Plasmid_Population];
 T = [Cell.T_Plasmid_Population];
-Type = [Cell.Type];%{Cell.Type};
+Type = [Cell.Type];
 % Clock = [Cell.Clock];
 % Cycle = [Cell.Cycle];
 % Generation = [Cell.Generation];

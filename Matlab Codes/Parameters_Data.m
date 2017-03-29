@@ -31,13 +31,13 @@ Rates.Immigation = [4e-1; 0];
 
 % Flushing rates
 % Rates.Cell_flushing = 1/(2*Mean_Cell_cycle*Initial.Total_Cell_Population); % Cell Death Rate
-Rates.F = 1e-2*[16 12 16]; % In ODE model, these elements represents rd/Kd rr/Kr rt/Kt respectively (subindex d for donors, r for Recipient, and t for transconjugants)
-Rates.D_Flushing = 1/(1+Initial.Total_Cell_Population)*[ 1 1]; % In ODE model, these elements represents Bdd,Bdr Bdt
-Rates.R_Flushing = 1/(1+Initial.Total_Cell_Population)*[.5 1]; % In ODE model, these elements represents Brd,Brr Brt
+% Rates.F = 1e-2*[16 16]; % In ODE model, these elements represents rd/Kd rr/Kr rt/Kt respectively (subindex d for donors, r for Recipient, and t for transconjugants)
+Rates.D_Flushing = 1e-2/Initial.Total_Cell_Population*[16 16]; % In ODE model, these elements represents Bdd,Bdr Bdt
+Rates.R_Flushing = 1e-2/Initial.Total_Cell_Population*[ 8 16]; % In ODE model, these elements represents Brd,Brr Brt
 
 Initial.Rate = Rates;
 
 %% Boundary Conditions
-Final_Time = 1000;%20*Mean_Cell_cycle; % Final Time
+% Final_Time = 1000;%20*Mean_Cell_cycle; % Final Time
 Final_Cured_Cell_Ratio = 0.99; % Final Ratio of Cured Cell's population in the system
 

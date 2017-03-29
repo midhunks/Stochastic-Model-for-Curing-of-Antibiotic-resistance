@@ -1,6 +1,7 @@
 %% Clearing Variables
 tic; clc; clear variables; close all; more off; 
-%profile off; profile viewer; %warning off;
+% profile off; profile viewer; 
+% warning off;
 format shortG; format compact % format longg %rat
 
 %% Setting defaults for plots

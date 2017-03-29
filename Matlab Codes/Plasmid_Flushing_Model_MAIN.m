@@ -8,9 +8,15 @@ Parameters_Data % File that handle parameters of the model
 n=1e6; n_update= n;
 PreAllocation_File
 
-%% Initialization
-Cell = Initlization_file(Initial); % Setting up the initial system
+%% Initialization of donor cells and recipient cells
+Donor_Cell = Initlization_file(1,Initial.D_Cell_Population); 
+Recipient_Cell = Initlization_file(2,Initial.R_Cell_Population);
+
+Cell = [Donor_Cell , Recipient_Cell];
+clear Donor_Cell Recipient_Cell
+
 Initial.Cell = Cell; % Saving Initial Setup
+
 %% System Dynamics
 tic;    iteration = 1;   Current_Time = 0;    Cured_Cell_Ratio = 0;
 
@@ -49,15 +55,16 @@ while Cured_Cell_Ratio < Final_Cured_Cell_Ratio %&& Current_Time < Final_Time
             n = n + n_update;
             PreAllocation_File            
         end
-        fprintf('%.2f%% of cells are cured in %.3f hours (Computational time - %.1f seconds)\n',...
-            100*Cured_Cell_Ratio,Current_Time,toc);        
+        fprintf('%.2f%% of cells are cured in %.3f hours',...
+                '(Computational time - %.1f seconds)\n',...
+                100*Cured_Cell_Ratio,Current_Time,toc);        
     end
     
     flag_iteration_completed = flag_iteration_completed + 1;
 end
-fprintf('\nSSA finished in %.1f seconds with %d iterations\n', toc, iteration);
-fprintf('\nCured: %.2f%% of cells\n Time: %.3f hours\n\n',...
-        100*Cured_Cell_Ratio, Current_Time);
+fprintf('\nSSA finished in %.1f seconds with %d iterations\n',...
+        '\nCured: %.2f%% of cells\n Time: %.3f hours\n\n',...
+        toc, iteration,100*Cured_Cell_Ratio, Current_Time);
 
 %% Remove unneccessary area preallocated in variables
 if n > iteration
@@ -67,7 +74,7 @@ if n > iteration
     Cell_Dynamics(iteration+1:n)=[];
 end
 
-%% Converting the data to cell from struct
+%% Converting the data to cell from struct for data anaysis
 Cell_Dynamics ={Cell_Dynamics};
 
 %% Data Analysis and plotting
