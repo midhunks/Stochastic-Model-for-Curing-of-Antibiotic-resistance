@@ -1,11 +1,9 @@
 %% Saving initial parameter Data
 BaseFilename = 'Inital Data ';
 Timestamp = datestr(now,'dd-mmm-yyyy HH-MM-SS AM');
-if ispc  % checking OS
-    Subdirectory = '\Outputs\';
-else
-    Subdirectory = '/Outputs/';
-end
+if ispc, b='\'; else, b='/'; end % defining forward/bckward slashes
+Subdirectory = [b,'Outputs',b];
+
 Initial_Data={Initial};
 save([pwd, Subdirectory, BaseFilename,Timestamp,'.mat'] , 'Initial_Data');
 

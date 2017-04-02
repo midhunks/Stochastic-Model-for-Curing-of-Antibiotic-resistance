@@ -1,4 +1,7 @@
 %% Plasmid Model
+if ispc, b='\'; else, b='/'; end % defining forward/bckward slashes
+addpath([pwd,b,'Generalized_Functions',b]);
+
 Start_UP % clearing variables and setting defaults
 
 %% Parameters
